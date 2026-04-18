@@ -1,3 +1,4 @@
+
 import { useState } from 'react'
 import { useAuth } from '../hooks/useAuth.js'
 import { useTheme } from '../hooks/useTheme.js'
@@ -68,13 +69,23 @@ export default function SettingsPage() {
         <form onSubmit={handleUpdateProfile} className="space-y-3">
           <div>
             <label className="form-label">Full Name</label>
-            <input className="form-input" value={name} onChange={e => setName(e.target.value)} />
+            <input 
+              className="form-input" 
+              value={name} 
+              onChange={e => setName(e.target.value)} 
+            />
           </div>
           <div>
             <label className="form-label">Email</label>
-            <input className="form-input" value={user?.email || ''} disabled className="form-input opacity-60 cursor-not-allowed" />
+            <input 
+              className="form-input opacity-60 cursor-not-allowed" 
+              value={user?.email || ''} 
+              disabled 
+            />
           </div>
-          <button type="submit" disabled={saving} className="btn-primary">{saving ? 'Saving…' : 'Update Profile'}</button>
+          <button type="submit" disabled={saving} className="btn-primary">
+            {saving ? 'Saving…' : 'Update Profile'}
+          </button>
         </form>
       </div>
 
@@ -84,13 +95,25 @@ export default function SettingsPage() {
         <form onSubmit={handleChangePassword} className="space-y-3">
           <div>
             <label className="form-label">Current Password</label>
-            <input type="password" className="form-input" value={oldPass} onChange={e => setOldPass(e.target.value)} />
+            <input 
+              type="password" 
+              className="form-input" 
+              value={oldPass} 
+              onChange={e => setOldPass(e.target.value)} 
+            />
           </div>
           <div>
             <label className="form-label">New Password</label>
-            <input type="password" className="form-input" value={newPass} onChange={e => setNewPass(e.target.value)} />
+            <input 
+              type="password" 
+              className="form-input" 
+              value={newPass} 
+              onChange={e => setNewPass(e.target.value)} 
+            />
           </div>
-          <button type="submit" disabled={saving} className="btn-primary">{saving ? 'Saving…' : 'Change Password'}</button>
+          <button type="submit" disabled={saving} className="btn-primary">
+            {saving ? 'Saving…' : 'Change Password'}
+          </button>
         </form>
       </div>
     </div>
