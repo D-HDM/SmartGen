@@ -1,66 +1,96 @@
 import { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { useAuth } from '../../hooks/useAuth.js'
-import { validateLoginForm } from '../../utils/validators.js'
 import toast from 'react-hot-toast'
 import { LogIn } from 'lucide-react'
 
 export default function Login() {
   const { login } = useAuth()
   const navigate = useNavigate()
-  const [fields, setFields] = useState({ email: '', password: '' })
-  const [errors, setErrors] = useState({})
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
   const [loading, setLoading] = useState(false)
-
-  const set = (k, v) => setFields(f => ({ ...f, [k]: v }))
 
   const handleSubmit = async (e) => {
     e.preventDefault()
-    const errs = validateLoginForm(fields)
-    if (Object.keys(errs).length) { setErrors(errs); return }
+    
+    if (!email || !password) {
+      toast.error('Please fill in all fields')
+      return
+    }
+    
     setLoading(true)
     try {
-      await login(fields.email, fields.password)
+      await login(email, password)
+      toast.success('Welcome back!')
       navigate('/')
     } catch (err) {
-      toast.error(err.response?.data?.message || 'Invalid credentials')
-    } finally { setLoading(false) }
+      const message = err.response?.data?.message || 'Invalid email or password'
+      toast.error(message)
+    } finally {
+      setLoading(false)
+    }
   }
 
   return (
-    <div className="min-h-screen bg-paper flex items-center justify-center p-4">
-      <div className="w-full max-w-sm">
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 flex items-center justify-center p-4">
+      <div className="w-full max-w-md">
         <div className="text-center mb-8">
-          <div className="w-12 h-12 bg-ink rounded-2xl flex items-center justify-center mx-auto mb-3">
-            <span className="text-white text-xl font-bold font-display">H</span>
+          <div className="w-14 h-14 bg-indigo-600 rounded-2xl flex items-center justify-center mx-auto mb-4">
+            <span className="text-white text-2xl font-bold">H</span>
           </div>
-          <h1 className="font-display text-2xl font-semibold">Sign in to HDM</h1>
-          <p className="text-sm text-gray-400 mt-1">Your document generation studio</p>
+          <h1 className="text-3xl font-bold text-slate-800">Sign in to HDM</h1>
+          <p className="text-slate-500 mt-2">Your document generation studio</p>
         </div>
 
-        <div className="card p-6">
-          <form onSubmit={handleSubmit} className="space-y-4">
+        <div className="bg-white rounded-xl shadow-lg p-6">
+          <form onSubmit={handleSubmit} className="space-y-5">
             <div>
-              <label className="form-label">Email</label>
-              <input type="email" className={`form-input ${errors.email ? 'border-red-400' : ''}`}
-                value={fields.email} onChange={e => set('email', e.target.value)} placeholder="you@example.com" />
-              {errors.email && <p className="text-xs text-red-500 mt-1">{errors.email}</p>}
+              <label className="block text-sm font-medium text-slate-700 mb-1">
+                Email Address
+              </label>
+              <input
+                type="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition"
+                placeholder="you@example.com"
+                required
+                autoComplete="email"
+              />
             </div>
+
             <div>
-              <label className="form-label">Password</label>
-              <input type="password" className={`form-input ${errors.password ? 'border-red-400' : ''}`}
-                value={fields.password} onChange={e => set('password', e.target.value)} placeholder="••••••••" />
-              {errors.password && <p className="text-xs text-red-500 mt-1">{errors.password}</p>}
+              <label className="block text-sm font-medium text-slate-700 mb-1">
+                Password
+              </label>
+              <input
+                type="password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition"
+                placeholder="••••••••"
+                required
+                autoComplete="current-password"
+              />
             </div>
-            <button type="submit" disabled={loading} className="btn-primary w-full justify-center">
-              <LogIn size={15} /> {loading ? 'Signing in…' : 'Sign In'}
+
+            <button
+              type="submit"
+              disabled={loading}
+              className="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-2.5 rounded-lg transition flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
+            >
+              <LogIn size={18} />
+              {loading ? 'Signing in...' : 'Sign In'}
             </button>
           </form>
         </div>
 
-        <p className="text-center text-sm text-gray-500 mt-4">
+        <p className="text-center text-sm text-slate-500 mt-6">
           Don't have an account?{' '}
-          <Link to="/register" className="text-slate font-medium hover:underline">Create one</Link>
+          <Link to="/register" className="text-indigo-600 hover:text-indigo-700 font-medium">
+            Create one
+          </Link>
         </p>
       </div>
     </div>
