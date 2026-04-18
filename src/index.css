@@ -1,0 +1,60 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html { font-family: 'DM Sans', sans-serif; }
+  body { @apply bg-paper text-ink antialiased; }
+  * { box-sizing: border-box; }
+}
+
+@layer components {
+  .btn-primary {
+    @apply bg-ink text-white px-5 py-2.5 rounded-xl font-medium text-sm
+           hover:bg-slate transition-all duration-150 shadow-sm active:scale-95;
+  }
+  .btn-ghost {
+    @apply bg-mist text-ink px-4 py-2.5 rounded-xl font-medium text-sm
+           hover:bg-gray-200 transition-all duration-150 active:scale-95;
+  }
+  .btn-accent {
+    @apply bg-rust text-white px-5 py-2.5 rounded-xl font-medium text-sm
+           hover:bg-orange-700 transition-all duration-150 shadow-sm active:scale-95;
+  }
+  .card {
+    @apply bg-white rounded-2xl border border-mist shadow-sm;
+  }
+  .form-input {
+    @apply w-full px-3 py-2 bg-paper border border-mist rounded-lg text-sm
+           focus:outline-none focus:ring-2 focus:ring-slate/20 focus:border-slate
+           transition-all font-body placeholder-gray-400;
+  }
+  .form-label {
+    @apply block text-xs font-semibold uppercase tracking-wide text-gray-500 mb-1;
+  }
+  .sidebar-link {
+    @apply flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium
+           text-gray-600 hover:bg-mist hover:text-ink transition-all duration-150 cursor-pointer;
+  }
+  .sidebar-link.active {
+    @apply bg-ink text-white hover:bg-slate;
+  }
+}
+
+@media print {
+  body * { visibility: hidden; }
+  #printable-area, #printable-area * { visibility: visible; }
+  #printable-area {
+    position: absolute; left: 0; top: 0;
+    width: 100%; padding: 2rem;
+    background: white; box-shadow: none; margin: 0;
+  }
+  .no-print { display: none !important; }
+  .print-bg { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar { width: 5px; height: 5px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: #ccc; border-radius: 4px; }
+::-webkit-scrollbar-thumb:hover { background: #999; }
